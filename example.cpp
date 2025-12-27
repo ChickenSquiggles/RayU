@@ -6,7 +6,7 @@ int main() {
     RayU ui {
         500,
         500,
-        "macro!",
+        "RayU!",
         60
     };
     
