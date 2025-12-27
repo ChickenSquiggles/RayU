@@ -13,7 +13,7 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(raylib)
 
-add_executable(app main.cpp)
+add_executable(app example.cpp)
 
 target_link_libraries(app raylib TypeDef Elements  UiElement RayU)
 add_subdirectory(lib)
