@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <cstdio>
+#include <string>
 #include "raylib.h"
 
 struct Vec2 {

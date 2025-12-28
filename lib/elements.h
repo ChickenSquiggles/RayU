@@ -23,6 +23,18 @@ struct Frame : UiElement {
 };
 
 
-struct Canvas : UiElement {
-    
+struct TextLabel : UiElement {
+    std::string Text;
+    Color TextColor;
+    float FontSize;
+    bool ScaleToFit;
+    float Transparency;
+    int Allignment;
+    void backendRender() override;
+    TextLabel() {
+        TextColor = Color{0,0,0,255};
+        FontSize = 12;
+        ScaleToFit = false;
+        Transparency = 0;
+    }
 };

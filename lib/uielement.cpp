@@ -39,6 +39,13 @@ RetVec4 UiElement::getPosSize() {
 }
 
 void UiElement::parent(UiElement *p) {
+    if (p == nullptr) {
+        if (Parent != nullptr) {
+            std::erase(Parent->Children, this);
+        }
+        Parent = nullptr;
+        return;
+    }
     if (Parent != nullptr) {
         std::erase(p->Children, this);
     }
