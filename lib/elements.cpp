@@ -36,12 +36,24 @@ void TextLabel::backendRender() {
 
     
     float fs = FontSize;
-    if (ScaleToFit) fs = 1000;
     Vector2 textSize = MeasureTextEx(GetFontDefault(), Text.c_str(), fs, 3.0f);
-    if (ScaleToFit) {
+    if (ScaleX) 
+    {
+        if (MeasureTextEx(GetFontDefault(), Text.c_str(), fs+2, 3.0f).x < posSize.Size.x) {
+            fs = 1000;
+        }
+        textSize = MeasureTextEx(GetFontDefault(), Text.c_str(), fs, 3.0f);
         while (textSize.x > posSize.Size.x) {
             fs -= 1;
             textSize = MeasureTextEx(GetFontDefault(), Text.c_str(), fs, 3.0f);   
+        }
+    }
+    if (ScaleY) {
+        if (!ScaleX) {
+            if (MeasureTextEx(GetFontDefault(), Text.c_str(), fs+2, 3.0f).x < posSize.Size.x) {
+                fs = 1000;
+            }
+            textSize = MeasureTextEx(GetFontDefault(), Text.c_str(), fs, 3.0f);
         }
         while (textSize.y > posSize.Size.y) {
             fs -= 1;
@@ -57,5 +69,5 @@ void TextLabel::backendRender() {
     {
         posX += (posSize.Size.x)-textSize.x;
     }
-    DrawTextEx(GetFontDefault(), Text.c_str(), Vector2{posX, posSize.Pos.y-(textSize.y/2)}, fs, 3.0f,finalColor);
+    DrawTextEx(GetFontDefault(), Text.c_str(), Vector2{posX, posSize.Pos.y}, fs, 3.0f,finalColor);
 }

@@ -10,28 +10,26 @@ RayU ui {
 };
 
 int main() {
-    Frame bluesquare;
-    bluesquare.Position = Udim2::fromScale(0.5, 0.5);
-    bluesquare.Size = Udim2::fromScale(0.5, 0.5);
-    bluesquare.AnchorPoint = Vec2::New(0.5, 0.5);
-    bluesquare.BackgroundColor = BLUE;
-    ui.Pair(&bluesquare);
+    Frame topBar;
+    topBar.Position = Udim2::fromScale(0, 0);
+    topBar.Size = Udim2::fromScale(1, .03);
+    topBar.BackgroundColor = BLUE;
+    ui.Pair(&topBar);
 
     TextLabel text;
     text.FontSize = 10;
-    text.ScaleToFit = true;
-    text.Text = "hey";
+    text.ScaleX = true;
+    text.ScaleY = true;
+    text.Text = "the queens bath is a very fun place";
     text.TextColor = WHITE;
-    text.Position = Udim2::fromScale(0, .5);
+    text.Position = Udim2::fromScale(0, 0);
     text.Size = Udim2::fromScale(1,1);
-    text.Allignment = 1; // 0: Left, 1: Center, 2: Right
-    text.parent(&bluesquare);
+    text.Allignment = 0; // 0: Left, 1: Center, 2: Right
+    text.parent(&topBar);
     
     int count = 0;
     while (RayU::open()) { // ui.open() also valid
         ui.Render(RAYWHITE);
-        SetWindowSize(500+(int)count*0.5, 500);
-        count++;
     }
     
 

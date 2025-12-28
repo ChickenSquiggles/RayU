@@ -27,14 +27,16 @@ struct TextLabel : UiElement {
     std::string Text;
     Color TextColor;
     float FontSize;
-    bool ScaleToFit;
+    bool ScaleX;
+    bool ScaleY;
     float Transparency;
     int Allignment;
     void backendRender() override;
     TextLabel() {
         TextColor = Color{0,0,0,255};
         FontSize = 12;
-        ScaleToFit = false;
+        ScaleX = false;
+        ScaleY = false;
         Transparency = 0;
     }
 };
