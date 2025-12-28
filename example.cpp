@@ -2,11 +2,11 @@
 
 // Properties cannot be changed after the fact. Specific functions will be implemented for changing of values
 RayU ui {
-    500,
-    500,
-    "RayU!",
-    60//,
-    //FLAG_WINDOW_UNDECORATED
+    500,        // Width
+    500,        // Height
+    "RayU!",    // Title
+    60          // Max FPS
+                // Additional window flags, such as FLAG_WINDOW_UNDECORATED
 };
 
 int main() {
