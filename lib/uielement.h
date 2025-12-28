@@ -2,17 +2,17 @@
 #include "typedef.h"
 
 struct UiElement {
-    Udim2 Position;
-    Udim2 Size;
-    Vec2 AnchorPoint;
-
-    std::vector<UiElement*> Children;
-    UiElement *Parent = nullptr;
-    virtual void parent(UiElement *p);
-
+    std::vector<UiElement*>* getChildren();
     virtual RetVec4 getPosSize();
-    void render();
+    virtual void parent(UiElement *p);
     virtual void backendRender();
-
-    UiElement() : Position(Udim2::fromScale(0.0f, 0.0f)), Size(Udim2::fromScale(0.5f, 0.5f)), AnchorPoint(Vec2::New(0.0f, 0.0f)) {}
+    void render();
+    
+    UiElement *Parent = nullptr;
+    Udim2 Position = Udim2{0.0f, 0.0f, 0.0f, 0.0f};
+    Udim2 Size = Udim2{0.5f, 0.0f, 0.5f, 0.0f};
+    Vector2 AnchorPoint = Vector2{0.0f, 0.0f};
+    
+    private:
+    std::vector<UiElement*> Children;
 };

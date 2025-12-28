@@ -1,6 +1,7 @@
 #include "elements.h"
 
-void Frame::backendRender() {
+void Frame::backendRender() 
+{
     const RetVec4 posSize = getPosSize();
     Color finalColor = BackgroundColor;
     finalColor.a = (Transparency > 1)?0:(255-Transparency*255);
@@ -16,9 +17,12 @@ void Frame::backendRender() {
             40,
             finalColor
         );
-    } else {
+    } 
+    else 
+    {
         DrawRectangleRec(
-            Rectangle{
+            Rectangle
+            {
                 posSize.Pos.x,
                 posSize.Pos.y,
                 posSize.Size.x,
@@ -29,45 +33,75 @@ void Frame::backendRender() {
     }
 }
 
-void TextLabel::backendRender() {
+void TextLabel::backendRender() 
+{
     const RetVec4 posSize = getPosSize();
-    Color finalColor = TextColor;
-    finalColor.a = (Transparency > 1)?0:(255-Transparency*255);
+    auto measure = [&](float fs) 
+    {
+        return MeasureTextEx(GetFontDefault(), Text.c_str(), fs, 3.0f);
+    };
 
-    
     float fs = FontSize;
-    Vector2 textSize = MeasureTextEx(GetFontDefault(), Text.c_str(), fs, 3.0f);
-    if (ScaleX) 
+    Vector2 textSize = measure(fs);
+
+    // Auto Scaling
+    if (AutoScaleX) 
     {
-        if (MeasureTextEx(GetFontDefault(), Text.c_str(), fs+2, 3.0f).x < posSize.Size.x) {
-            fs = 1000;
-        }
-        textSize = MeasureTextEx(GetFontDefault(), Text.c_str(), fs, 3.0f);
-        while (textSize.x > posSize.Size.x) {
-            fs -= 1;
-            textSize = MeasureTextEx(GetFontDefault(), Text.c_str(), fs, 3.0f);   
-        }
-    }
-    if (ScaleY) {
-        if (!ScaleX) {
-            if (MeasureTextEx(GetFontDefault(), Text.c_str(), fs+2, 3.0f).x < posSize.Size.x) {
-                fs = 1000;
+        if (textSize.x < posSize.Size.x)
+        {
+            while (textSize.x < posSize.Size.x)
+            {
+                fs++;
+                textSize = measure(fs);
             }
-            textSize = MeasureTextEx(GetFontDefault(), Text.c_str(), fs, 3.0f);
+            fs--;
         }
-        while (textSize.y > posSize.Size.y) {
-            fs -= 1;
-            textSize = MeasureTextEx(GetFontDefault(), Text.c_str(), fs, 3.0f);   
+        else
+        {
+            while (textSize.x > posSize.Size.x)
+            {
+                fs--;
+                textSize = measure(fs);
+            }
         }
     }
+    if (AutoScaleY) 
+    {
+        if (!AutoScaleX) 
+        {
+            while (textSize.x < posSize.Size.x)
+            {
+                fs++;
+                textSize = measure(fs);
+            }
+            fs--;
+        }
+        while (textSize.y > posSize.Size.y) 
+        {
+            fs--;
+            textSize = measure(fs);   
+        }
+    }
+
+    // Allignment
     float posX = posSize.Pos.x;
-    if (Allignment == 1) 
-    {
+    if (xAllignment == 1)
         posX += (posSize.Size.x/2)-(textSize.x/2);
-    } 
-    else if (Allignment == 2)
-    {
+    else if (xAllignment == 2)
         posX += (posSize.Size.x)-textSize.x;
-    }
-    DrawTextEx(GetFontDefault(), Text.c_str(), Vector2{posX, posSize.Pos.y}, fs, 3.0f,finalColor);
+
+    float posY = posSize.Pos.y;
+    if (yAllignment == 1)
+        posY += (posSize.Size.y/2)-(textSize.y/2);
+    else if (yAllignment == 2)
+        posY += (posSize.Size.y)-textSize.y;
+    
+    
+    // Final Drawing
+    Color finalColor = TextColor;
+    finalColor.a = (Transparency > 1)
+    ? 0
+    : (255-Transparency*255);
+
+    DrawTextEx(GetFontDefault(), Text.c_str(), Vector2{posX, posY}, fs, 3.0f,finalColor);
 }
