@@ -3,34 +3,26 @@
 void Frame::backendRender() 
 {
     const RetVec4 posSize = getPosSize();
-    Color finalColor = BackgroundColor;
-    finalColor.a = (Transparency > 1)?0:(255-Transparency*255);
-    if (Roundness > 0) {
-        DrawRectangleRounded(
-            Rectangle{
-                posSize.Pos.x,
-                posSize.Pos.y,
-                posSize.Size.x,
-                posSize.Size.y
-            },
-            Roundness/100,
-            40,
-            finalColor
-        );
-    } 
-    else 
+    Rectangle rec
     {
-        DrawRectangleRec(
-            Rectangle
-            {
-                posSize.Pos.x,
-                posSize.Pos.y,
-                posSize.Size.x,
-                posSize.Size.y
-            },
-            finalColor
-        );
-    }
+        posSize.Pos.x,
+        posSize.Pos.y,
+        posSize.Size.x,
+        posSize.Size.y
+    };
+
+    Color finalColor = BackgroundColor;
+    finalColor.a = (Transparency > 1)
+    ? 0
+    : (255-Transparency*255);
+
+    DrawRectangleRounded
+    (
+        rec,
+        Roundness/100,
+        40,
+        finalColor
+    );
 }
 
 void TextLabel::backendRender() 

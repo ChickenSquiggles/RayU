@@ -8,7 +8,8 @@ std::vector<UiElement*>* UiElement::getChildren()
 RetVec4 UiElement::getPosSize()
 {
     Vector2 parentPos {0, 0};
-    Vector2 parentSize {
+    Vector2 parentSize 
+    {
         (float)GetScreenWidth(),
         (float)GetScreenHeight()
     };
@@ -20,12 +21,14 @@ RetVec4 UiElement::getPosSize()
         parentSize = p.Size;
     }
 
-    Vector2 finalPosition {
+    Vector2 finalPosition 
+    {
         parentPos.x + parentSize.x * Position.X.Scale + Position.X.Offset,
         parentPos.y + parentSize.y * Position.Y.Scale + Position.Y.Offset
     };
 
-    Vector2 finalSize {
+    Vector2 finalSize 
+    {
         parentSize.x * Size.X.Scale + Size.X.Offset,
         parentSize.y * Size.Y.Scale + Size.Y.Offset
     };
@@ -56,8 +59,6 @@ void UiElement::render()
 {
     backendRender();
     
-    for (UiElement *child : Children) 
-    {
+    for (UiElement *child : Children)
         child->render();
-    }
 }
