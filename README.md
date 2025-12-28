@@ -14,3 +14,5 @@ Objects can define their size and position as either:
 - Explicit pixel values when needed
 
 This allows interfaces to remain **uniform across any monitor or window size**, without hard pixel dependencies.
+
+**Build however you use CMAKE, but my personal build workflow is 'cmake -S . -B build -G "MinGW Makefiles"' to start a build directory (one time thing), then 'cmake --build build' from then on.**

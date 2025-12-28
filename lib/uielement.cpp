@@ -14,8 +14,8 @@ void UiElement::backendRender() {
 }
 
 RetVec4 UiElement::getPosSize() {
-    Vector2 absPos;
-    Vector2 absSize;
+    Vec2 absPos;
+    Vec2 absSize;
     if (Parent == nullptr) {
         absPos.x = Position.X.Scale * GetScreenWidth() + Position.X.Offset;
         absPos.y = Position.Y.Scale * GetScreenHeight() + Position.Y.Offset;
@@ -35,7 +35,7 @@ RetVec4 UiElement::getPosSize() {
         absPos.x -= absSize.x*AnchorPoint.x;
         absPos.y -= absSize.y*AnchorPoint.y;
     }
-    return RetVec4(absPos, absSize);
+    return RetVec4{absPos, absSize};
 }
 
 void UiElement::parent(UiElement *p) {

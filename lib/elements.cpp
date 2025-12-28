@@ -2,6 +2,8 @@
 
 void Frame::backendRender() {
     const RetVec4 posSize = getPosSize();
+    Color finalColor = BackgroundColor;
+    finalColor.a = (Transparency > 1)?0:(255-Transparency*255);
 
     if (Roundness > 0) {
         DrawRectangleRounded(
@@ -13,7 +15,7 @@ void Frame::backendRender() {
             },
             Roundness/100,
             40,
-            FillColor
+            finalColor
         );
     } else {
         DrawRectangleRec(
@@ -23,7 +25,7 @@ void Frame::backendRender() {
                 posSize.Size.x,
                 posSize.Size.y
             },
-            FillColor
+            finalColor
         );
     }
 }

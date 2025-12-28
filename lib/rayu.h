@@ -5,11 +5,11 @@
 
 struct RayU {
     private:
-    void makeWindow(int w, int h, const char* title, int fps);
+    static void makeWindow(int w, int h, const char* title, int fps);
 
     public:
-    bool open();
-    void close();
+    static bool open();
+    static void close();
 
     std::vector<UiElement*> Children;
     void Pair(UiElement* element);
@@ -25,6 +25,10 @@ struct RayU {
         makeWindow(w, h, "RayU", 60);
     }
     RayU(int w, int h, const char* title, int fps) {
+        makeWindow(w, h, title, fps);
+    }
+    RayU(int w, int h, const char* title, int fps, ConfigFlags flag) {
+        SetConfigFlags(flag);
         makeWindow(w, h, title, fps);
     }
 };

@@ -3,41 +3,31 @@
 #include <cstdio>
 #include "raylib.h"
 
+struct Vec2 {
+    float x;
+    float y;
+
+    static Vec2 New(float x, float y);
+};
+
 struct Udim {
     float Scale;
-    float Offset;
-    Udim() {
-        Scale = 1.0f;
-        Offset = 0.0f;
-    }
-    Udim(float scale) {
-        Scale = scale;
-        Offset = 0.0f;
-    }
-    Udim(float scale, float offset) {
-        Scale = scale;
-        Offset = offset;
-    }
+    float Offset = 0;
+    static Udim New(float scale, float offset);
+    static Udim fromScale(float scale);
+    static Udim fromOffset(float offset);
 };
 
 struct Udim2 {
     Udim X;
     Udim Y;
-    Udim2() {
-        X = Udim();
-        Y = Udim();
-    }
-    Udim2(float scale1, float scale2) {
-        X = Udim(scale1);
-        Y = Udim(scale2);
-    }
+
+    static Udim2 New(float xScale, float xOffset, float yScale, float yOffset);
+    static Udim2 fromScale(float xScale, float yScale);
+    static Udim2 fromOffset(float xOffset, float yOffset);
 };
 
 struct RetVec4 {
-    Vector2 Pos;
-    Vector2 Size;
-    RetVec4 (Vector2 pos, Vector2 size) {
-        Pos = pos;
-        Size = size;
-    }
+    Vec2 Pos;
+    Vec2 Size;
 };
