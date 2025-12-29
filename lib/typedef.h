@@ -2,8 +2,8 @@
 #include <vector>
 #include <cstdio>
 #include <string>
+#include <math.h>
 #include "raylib.h"
-
 struct Udim 
 {
     static Udim fromScale(float scale);

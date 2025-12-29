@@ -8,7 +8,7 @@ int main()
     topBar.Position = Udim2::fromScale(0, 0);
     topBar.Size = Udim2{1, 0, 0, 25};
     topBar.BackgroundColor = BLACK;
-    ui.Pair(&topBar);
+    ui.pair(&topBar);
 
     TextLabel text;
     text.FontSize = 10;
@@ -24,10 +24,21 @@ int main()
     
     int count = 0;
 
-    ui.open(800, 500, "Hello!", 60, FLAG_WINDOW_RESIZABLE);
+    ui.open(800, 500, "Hello!", 60, FLAG_WINDOW_UNDECORATED);
+
+    bool isHolding = false;
+    
+    Udim2 dragFrom
+    {
+        1.0f,
+        -30.0f,
+        1.0f,
+        -30.0f
+    };
     while (ui.isOpen()) 
     {
-        ui.Render(RAYWHITE);
+        ui.resizable(&dragFrom);
+        ui.render(RAYWHITE);
     }
     ui.close();
 }

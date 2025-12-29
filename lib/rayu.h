@@ -11,12 +11,17 @@ struct RayU
     void open(int w, int h, const char* title, int fps);
     void open(int w, int h, const char* title, int fps, ConfigFlags flags);
     
-    void Pair(UiElement* element);
-    void Render(Color bgColor = RAYWHITE);
+    void pair(UiElement* element);
+    void render(Color bgColor = RAYWHITE);
     
     bool isOpen();
     void close();
     
+    void resizable(Udim2* within);
     private:
-    std::vector<UiElement*> Children;
+    Vector2 p_startingMousePos;
+    Vector2 p_startingWindowSize;
+    Vector2 p_startingWindowPosition;
+    bool p_isHolding;
+    std::vector<UiElement*> p_Children;
 };
