@@ -18,6 +18,7 @@ struct RayU
     void close();
     
     void resizable(Udim2* within);
+    
     private:
     Vector2 p_startingMousePos;
     Vector2 p_startingWindowSize;

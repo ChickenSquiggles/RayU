@@ -1,7 +1,7 @@
-add_library(TypeDef typedef.cpp)
-add_library(UiElement uielement.cpp)
-add_library(Elements elements.cpp)
-add_library(RayU rayu.cpp)
+add_library(TypeDef typedef.cpp typedef.h)
+add_library(UiElement uielement.cpp uielement.h)
+add_library(Elements elements.cpp elements.h)
+add_library(RayU rayu.cpp rayu.h)
 
 target_include_directories(
     TypeDef

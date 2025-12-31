@@ -27,13 +27,13 @@ int main()
     ui.open(800, 500, "Hello!", 60, FLAG_WINDOW_UNDECORATED);
 
     bool isHolding = false;
-    
+
     Udim2 dragFrom
     {
-        1.0f,
-        -30.0f,
-        1.0f,
-        -30.0f
+        0.0f,
+        30.0f,
+        0.0f,
+        30.0f
     };
     while (ui.isOpen()) 
     {

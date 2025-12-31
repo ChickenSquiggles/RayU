@@ -2,19 +2,11 @@
 
 void Frame::backendRender() 
 {
-    const RetVec4 posSize = getPosSize();
-    Rectangle rec
-    {
-        posSize.Pos.x,
-        posSize.Pos.y,
-        posSize.Size.x,
-        posSize.Size.y
-    };
+    RetVec4 posSize = getPosSize();
+    Rectangle rec = posSize.makeRect();
 
     Color finalColor = BackgroundColor;
-    finalColor.a = (Transparency > 1)
-    ? 0
-    : (255-Transparency*255);
+    finalColor.a = std::max(255 - Transparency * 25, 0.0f);
 
     DrawRectangleRounded
     (
@@ -36,7 +28,7 @@ void TextLabel::backendRender()
     float fs = FontSize;
     Vector2 textSize = measure(fs);
 
-    // Auto Scaling
+    // Auto Scaling (i know this code sucks i need to go back and change it)
     if (AutoScaleX) 
     {
         if (textSize.x < posSize.Size.x)

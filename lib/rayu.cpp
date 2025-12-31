@@ -1,7 +1,5 @@
 #include "rayu.h"
 
-
-
 void makeWindow(int w, int h, const char* title, int fps) {
     InitWindow(w, h, title);
     SetTargetFPS(fps);
@@ -56,85 +54,39 @@ void RayU::render(Color bgColor)
 
 void RayU::resizable(Udim2* within)
 {
-    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+    if 
+    (
+        IsMouseButtonDown(MOUSE_BUTTON_LEFT)                         && 
+        CheckCollisionPointRec(GetMousePosition(), within->toRect()) && 
+        !p_isHolding
+    )
     {
-        if (!p_isHolding) {
-            p_startingMousePos = GetMousePosition();
-            p_startingWindowSize = Vector2
-            {
-                (float)GetScreenWidth(),
-                (float)GetScreenHeight()
-            };
-            p_startingWindowPosition = GetWindowPosition();
-            int lowX = std::min
-            (
-                p_startingWindowSize.x*within->X.Scale,
-                p_startingWindowSize.x*within->X.Scale + within->X.Offset
-            );
-            int highX = std::max
-            (
-                p_startingWindowSize.x*within->X.Scale,
-                p_startingWindowSize.x*within->X.Scale + within->X.Offset
-            );
-        
-            int lowY = std::min
-            (
-                p_startingWindowSize.y*within->Y.Scale,
-                p_startingWindowSize.y*within->Y.Scale + within->Y.Offset
-            );
-            int highY = std::max
-            (
-                p_startingWindowSize.y*within->Y.Scale,
-                p_startingWindowSize.y*within->Y.Scale + within->Y.Offset
-            );
-
-            if
-            (
-                p_startingMousePos.x >= lowX &&
-                p_startingMousePos.x <= highX &&
-                p_startingMousePos.y >= lowY &&
-                p_startingMousePos.y <= highY
-            )
-            {
-                p_isHolding = true;
-            }
-        }
+        p_startingMousePos = GetMousePosition();
+        p_startingWindowSize = getDimensions();
+        p_startingWindowPosition = GetWindowPosition();
+        p_isHolding = true;
     }
-    else
-    {
+    
+    if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
         p_isHolding = false;
-    }
 
-    if (p_isHolding) { 
-        Vector2 currentWindowPos = GetWindowPosition();
-        Vector2 mousePos = GetMousePosition();
-        Vector2 mouseScreen
-        {
-            mousePos.x + currentWindowPos.x,
-            mousePos.y + currentWindowPos.y
-        };
-        Vector2 startingMouseScreen
-        {
-            p_startingMousePos.x + p_startingWindowPosition.x,
-            p_startingMousePos.y + p_startingWindowPosition.y
-        };
+    if (!p_isHolding)
+        return;
 
-        int distX = mouseScreen.x - startingMouseScreen.x;
-        int distY = mouseScreen.y - startingMouseScreen.y;
+    Vector2 mousePos = GetMousePosition();
+    Vector2 currentWindowPos = GetWindowPosition();
+
+    Vector2 mouseScreen = mousePos + currentWindowPos;
+    Vector2 startingMouseScreen = p_startingMousePos + p_startingWindowPosition;
+
+    Vector2 dist = mouseScreen - startingMouseScreen;
         
-        bool draggingLeft = p_startingMousePos.x < p_startingWindowSize.x / 2;
-        if (draggingLeft) 
-        {
-            int newSizeX = std::max((int)p_startingWindowSize.x - distX, 100);
-            int newSizeY = std::max((int)p_startingWindowSize.y + distY, 100);
-            SetWindowSize(newSizeX, newSizeY);
-            SetWindowPosition(p_startingWindowPosition.x + distX, currentWindowPos.y);
-        } 
-        else 
-        {
-            int newSizeX = std::max((int)p_startingWindowSize.x + distX, 100);
-            int newSizeY = std::max((int)p_startingWindowSize.y + distY, 100);
-            SetWindowSize(newSizeX, newSizeY);
-        }
-    }
+    bool draggingRight = p_startingMousePos.x < p_startingWindowSize.x / 2;
+    bool draggingDown = p_startingMousePos.y < p_startingWindowSize.y / 2;
+
+    SetWindowSize( std::max( p_startingWindowSize.x + ( draggingRight ? -dist.x : dist.x ), 100.0f ), 
+                   std::max( p_startingWindowSize.y + ( draggingDown  ? -dist.y : dist.y ), 100.0f ) );
+    
+    SetWindowPosition( p_startingWindowPosition.x + ( draggingRight ? std::min( dist.x, p_startingWindowSize.x - 100.0f ) : 0 ), 
+                       p_startingWindowPosition.y + ( draggingDown  ? std::min( dist.y, p_startingWindowSize.y - 100.0f ) : 0 ) );
 }
