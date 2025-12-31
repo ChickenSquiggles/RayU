@@ -9,7 +9,7 @@ struct Frame : UiElement
     float Roundness = 0;
     float Transparency = 0;
 
-    Frame* clone();
+    Frame clone();
 };
 
 struct TextLabel : UiElement
@@ -29,5 +29,5 @@ struct TextLabel : UiElement
     bool AutoScaleX = false;
     bool AutoScaleY = false;
 
-    TextLabel* clone();
+    TextLabel clone();
 };

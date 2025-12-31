@@ -20,11 +20,13 @@ int main()
 
 
     // Make a new square, but this time make it a clone of the first. This simply takes all of the properties of the one cloned.
-    Frame* square2 = square.clone();
-    // Parent this new one to the old one
-    square2->parent(square);
-    // Change the color up
-    square2->BackgroundColor = WHITE;
+    Frame square2 = square.clone();
+    // Change the color
+    square2.BackgroundColor = WHITE;
+    // Might as well make it round (roundness 0-100 like percents)
+    square2.Roundness = 100;
+    // Parent this new one to the old one. Parent is not inherited with clone.
+    square2.parent(square);
 
     // This results in a centered black square with half of the windows dimensions, with a white square inside of it taking half of its parents dimensions (inheritely 1/4 of the window)
 

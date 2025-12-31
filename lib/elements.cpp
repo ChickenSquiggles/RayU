@@ -16,14 +16,11 @@ void Frame::backendRender()
         finalColor
     );
 }
-Frame* Frame::clone()
+Frame Frame::clone()
 {
     Frame* frame = new Frame(*this);
-    if (frame->Parent)
-    {
-        frame->Parent->getChildren()->push_back(frame);
-    }
-    return frame;
+    frame->Parent = nullptr;
+    return *frame;
 }
 
 void TextLabel::backendRender() 
@@ -84,12 +81,9 @@ void TextLabel::backendRender()
 
     DrawTextEx(GetFontDefault(), Text.c_str(), pos, fs, 3.0f,finalColor);
 }
-TextLabel* TextLabel::clone()
+TextLabel TextLabel::clone()
 {
     TextLabel* textLabel = new TextLabel(*this);
-    if (textLabel->Parent)
-    {
-        textLabel->Parent->getChildren()->push_back(textLabel);
-    }
-    return textLabel;
+    textLabel->Parent = nullptr;
+    return *textLabel;
 }
