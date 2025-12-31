@@ -17,9 +17,9 @@ struct Udim2
 {
     static Udim2 fromScale(float xScale, float yScale);
     static Udim2 fromOffset(float xOffset, float yOffset);
+    static Rectangle makeRect(const Udim2& from, const Udim2& to);
     Vector2 getScales();
     Vector2 getOffsets();
-    Rectangle toRect();
     
     Udim X = Udim{};
     Udim Y = Udim{};
@@ -32,6 +32,10 @@ struct RetVec4
 
     Rectangle makeRect();
 };
+
+// Operator overloads of RayU structs (prolly not that useful)
+Udim2 operator+(const Udim2& a, const Udim2& b);
+Udim2 operator-(const Udim2& a, const Udim2& b);
 
 // Operator overloads of RayLib structs
 Vector2 operator+(const Vector2& a, const Vector2& b);

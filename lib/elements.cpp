@@ -16,6 +16,15 @@ void Frame::backendRender()
         finalColor
     );
 }
+Frame* Frame::clone()
+{
+    Frame* frame = new Frame(*this);
+    if (frame->Parent)
+    {
+        frame->Parent->getChildren()->push_back(frame);
+    }
+    return frame;
+}
 
 void TextLabel::backendRender() 
 {
@@ -74,4 +83,13 @@ void TextLabel::backendRender()
     finalColor.a = std::max(255 - Transparency * 25, 0.0f);
 
     DrawTextEx(GetFontDefault(), Text.c_str(), pos, fs, 3.0f,finalColor);
+}
+TextLabel* TextLabel::clone()
+{
+    TextLabel* textLabel = new TextLabel(*this);
+    if (textLabel->Parent)
+    {
+        textLabel->Parent->getChildren()->push_back(textLabel);
+    }
+    return textLabel;
 }

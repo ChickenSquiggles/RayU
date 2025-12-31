@@ -38,9 +38,9 @@ void RayU::close()
     CloseWindow();
 }
 
-void RayU::pair(UiElement* element) 
+void RayU::pair(UiElement& element) 
 {
-    p_Children.push_back(element);
+    p_Children.push_back(&element);
 }
 
 void RayU::render(Color bgColor) 
@@ -52,12 +52,12 @@ void RayU::render(Color bgColor)
     EndDrawing();
 }
 
-void RayU::resizable(Udim2* within)
+void RayU::resizable(Udim2& from, Udim2& to)
 {
     if 
     (
-        IsMouseButtonDown(MOUSE_BUTTON_LEFT)                         && 
-        CheckCollisionPointRec(GetMousePosition(), within->toRect()) && 
+        IsMouseButtonDown(MOUSE_BUTTON_LEFT)                                  && 
+        CheckCollisionPointRec(GetMousePosition(), Udim2::makeRect(from, to)) && 
         !p_isHolding
     )
     {

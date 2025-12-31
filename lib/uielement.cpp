@@ -29,15 +29,15 @@ RetVec4 UiElement::getPosSize()
 }
 
 // Remove old parent, if new parent is not nullptr, add self to parent's children
-void UiElement::parent(UiElement *p) 
+void UiElement::parent(UiElement& p) 
 {
-    if (p == Parent)
+    if (&p == Parent)
         return;
     
     if (Parent)
         std::erase(Parent->Children, this);
 
-    Parent = p;
+    Parent = &p;
 
     if (Parent)
         Parent->Children.push_back(this);

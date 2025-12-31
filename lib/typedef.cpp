@@ -39,15 +39,31 @@ Vector2 Udim2::getOffsets()
 {
     return { this->X.Offset, this->Y.Offset };
 }
-// this is dumb dont use it
-Rectangle Udim2::toRect()
+Rectangle Udim2::makeRect(const Udim2& from, const Udim2& to)
 {
     Vector2 size = getDimensions();
+    Rectangle result;
+    result.x = from.X.Scale * size.x + from.X.Offset;
+    result.y = from.Y.Scale * size.y + from.Y.Offset;
+    result.width =  (to.X.Scale * size.x + to.X.Offset) - result.x;
+    result.height = (to.Y.Scale * size.y + to.Y.Offset) - result.y;
 
-    return { size.x * X.Scale,
-             size.y * Y.Scale,
-             X.Offset,
-             Y.Offset };
+    return result;
+}
+
+Udim2 operator+(const Udim2& a, const Udim2& b)
+{
+    return Udim2 { a.X.Scale  + b.X.Scale,
+                   a.X.Offset + b.X.Offset,
+                   a.Y.Scale  + b.Y.Scale,
+                   a.Y.Offset + b.Y.Offset };
+}
+Udim2 operator-(const Udim2& a, const Udim2& b)
+{
+    return Udim2 { a.X.Scale  - b.X.Scale,
+                   a.X.Offset - b.X.Offset,
+                   a.Y.Scale  - b.Y.Scale,
+                   a.Y.Offset - b.Y.Offset };
 }
 
 // RETVEC4

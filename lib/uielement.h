@@ -4,7 +4,7 @@
 struct UiElement {
     std::vector<UiElement*>* getChildren();
     virtual RetVec4 getPosSize();
-    virtual void parent(UiElement *p);
+    virtual void parent(UiElement& p);
     void render();
     
     UiElement *Parent = nullptr;
@@ -13,6 +13,6 @@ struct UiElement {
     Vector2 AnchorPoint = Vector2{0.0f, 0.0f};
     
     private:
-    virtual void backendRender();
     std::vector<UiElement*> Children;
+    virtual void backendRender();
 };

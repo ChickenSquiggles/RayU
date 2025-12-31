@@ -11,13 +11,13 @@ struct RayU
     void open(int w, int h, const char* title, int fps);
     void open(int w, int h, const char* title, int fps, ConfigFlags flags);
     
-    void pair(UiElement* element);
+    void pair(UiElement& element);
     void render(Color bgColor = RAYWHITE);
     
     bool isOpen();
     void close();
     
-    void resizable(Udim2* within);
+    void resizable(Udim2& from, Udim2& to);
     
     private:
     Vector2 p_startingMousePos;
