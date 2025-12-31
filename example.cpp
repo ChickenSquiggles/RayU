@@ -12,7 +12,7 @@ int main()
 
     TextLabel text;
     text.FontSize = 10;
-    text.AutoScaleX = false;
+    text.AutoScaleX = true;
     text.AutoScaleY = true;
     text.Text = "blah blah";
     text.TextColor = WHITE;

@@ -84,6 +84,28 @@ Vector2 operator*(const Vector2& a, const Vector2& b)
     return { a.x * b.x,
              a.y * b.y };
 }
+
+Vector2 operator/(const Vector2& a, const float coefficient)
+{
+    return { a.x / coefficient,
+             a.y / coefficient };
+}
+Vector2 operator/(const float coefficient, const Vector2& a)
+{
+    return a / coefficient;
+}
+Vector2 operator/(const Vector2& a, const Vector2& b)
+{
+    return { a.x / b.x,
+             a.y / b.y };
+}
+
+Vector2& operator+=(Vector2& a, const Vector2& b)
+{
+    a.x += b.x;
+    a.y += b.y;
+    return a;
+}
 Vector2& operator-=(Vector2& a, const Vector2& b)
 {
     a.x -= b.x;

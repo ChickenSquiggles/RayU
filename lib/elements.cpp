@@ -28,38 +28,28 @@ void TextLabel::backendRender()
     float fs = FontSize;
     Vector2 textSize = measure(fs);
 
-    // Auto Scaling (i know this code sucks i need to go back and change it)
+    // not a huge fan of this code but i cant find a better solution
     if (AutoScaleX) 
     {
-        if (textSize.x < posSize.Size.x)
+        while (textSize.x < posSize.Size.x)
         {
-            while (textSize.x < posSize.Size.x)
-            {
-                fs++;
-                textSize = measure(fs);
-            }
-            fs--;
+            fs++;
+            textSize = measure(fs);
         }
-        else
+        while (textSize.x > posSize.Size.x)
         {
-            while (textSize.x > posSize.Size.x)
-            {
-                fs--;
-                textSize = measure(fs);
-            }
+            fs--;
+            textSize = measure(fs);
         }
     }
     if (AutoScaleY) 
     {
-        if (!AutoScaleX) 
-        {
-            while (textSize.x < posSize.Size.x)
+        if (!AutoScaleX)
+            while (textSize.y < posSize.Size.y) 
             {
                 fs++;
-                textSize = measure(fs);
+                textSize = measure(fs);   
             }
-            fs--;
-        }
         while (textSize.y > posSize.Size.y) 
         {
             fs--;
@@ -68,24 +58,20 @@ void TextLabel::backendRender()
     }
 
     // Allignment
-    float posX = posSize.Pos.x;
-    if (xAllignment == 1)
-        posX += (posSize.Size.x/2)-(textSize.x/2);
-    else if (xAllignment == 2)
-        posX += (posSize.Size.x)-textSize.x;
-
-    float posY = posSize.Pos.y;
-    if (yAllignment == 1)
-        posY += (posSize.Size.y/2)-(textSize.y/2);
-    else if (yAllignment == 2)
-        posY += (posSize.Size.y)-textSize.y;
-    
+    Vector2 pos = posSize.Pos;
+    switch (xAllignment)
+    {
+        case 1:
+            pos += (posSize.Size/2) - (textSize/2);
+            break;
+        case 2:
+            pos += posSize.Size - textSize;
+            break;
+    }
     
     // Final Drawing
     Color finalColor = TextColor;
-    finalColor.a = (Transparency > 1)
-    ? 0
-    : (255-Transparency*255);
+    finalColor.a = std::max(255 - Transparency * 25, 0.0f);
 
-    DrawTextEx(GetFontDefault(), Text.c_str(), Vector2{posX, posY}, fs, 3.0f,finalColor);
+    DrawTextEx(GetFontDefault(), Text.c_str(), pos, fs, 3.0f,finalColor);
 }

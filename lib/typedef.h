@@ -41,6 +41,11 @@ Vector2 operator*(const Vector2& a, const float coefficient);
 Vector2 operator*(const float coefficient, const Vector2& a);
 Vector2 operator*(const Vector2& a, const Vector2& b);
 
+Vector2 operator/(const Vector2& a, const float coefficient);
+Vector2 operator/(const float coefficient, const Vector2& a);
+Vector2 operator/(const Vector2& a, const Vector2& b);
+
+Vector2& operator+=(Vector2& a, const Vector2& b);
 Vector2& operator-=(Vector2& a, const Vector2& b);
 
 Color& operator-=(Color& a, const Color& b);
