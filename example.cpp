@@ -2,6 +2,8 @@
 
 RayU ui;
 
+// Udim2 consists of X, Y, two Udim2's. 
+
 int main() 
 {
     // Make frame (sqaure that is able to be rounded)
@@ -28,63 +30,45 @@ int main()
     // Parent this new one to the old one. Parent is not inherited with clone.
     square2.parent(square);
 
-    // This results in a centered black square with half of the windows dimensions, with a white square inside of it taking half of its parents dimensions (inheritely 1/4 of the window)
-
     
+    // Lets make some text in the middle
+    TextLabel text;
+    text.Text = "hey!";
+    text.TextColor = BLACK; // black is already default. just showing how it works
+    // Scale both the x and y automatically so it fits in the circle well, and lets center it on x and y
+    text.AutoScaleX = true;
+    text.xAllignment = 1;
+    text.AutoScaleY = true;
+    text.yAllignment = 1;
+    // Inherit 70% of size from the parent to make up for the rounded edegs, and center the textlabel around the center of the parent
+    text.Position = Udim2::fromScale(.5, .5);
+    text.AnchorPoint = Vector2{.5, .5};
+    text.Size = Udim2::fromScale(.7, .7);
+    // Of course, we have to parent it to something. In this case, we should parent it to the inner square/circle thing we made
+    text.parent(square2);
+
+
+    // This results in a centered black square with half of the windows dimensions, with a white round square inside of it 
+    // that takes half of its parents dimensions (inheritely 1/4 of the window), and some black text in the center saying "hey!", 
+    // scaled down to make up for rounded edges
 
     
     // Be able to drag from the bottom right corner
-    Udim2 dragTo = Udim2::fromScale(1, 1);
+    Udim2 dragToResize = Udim2::fromScale(1, 1);
     // took the ending point and went back 30 pixels on x and y. you could change the scales arounds too but i think pixels make sense for dragging.
-    Udim2 dragFrom = dragTo - Udim2::fromOffset(30, 30);
+    Udim2 dragFromResize = dragToResize - Udim2::fromOffset(30, 30);
+
+    // Top left corner.
+    Udim2 dragFrom = Udim2::fromScale(0, 0);
+    // Top right corner, down 30 pixels.
+    Udim2 dragTo = Udim2{1, 0, 0, 30}; 
 
     ui.open(800, 500, "Hello!", 60, FLAG_WINDOW_UNDECORATED);
     while (ui.isOpen()) 
     {
-        ui.resizable(dragFrom, dragTo);
+        ui.resizable(dragFromResize, dragToResize);
+        ui.draggable(dragFrom, dragTo);
         ui.render(RAYWHITE);
     }
     ui.close();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Example 1
-    Frame topBar;
-    topBar.Position = Udim2::fromScale(0, 0);
-    topBar.Size = Udim2{1, 0, 0, 25};
-    topBar.BackgroundColor = BLACK;
-    ui.pair(topBar);
-    TextLabel text;
-    text.FontSize = 10;
-    text.AutoScaleX = true;
-    text.AutoScaleY = true;
-    text.Text = "blah blah";
-    text.TextColor = WHITE;
-    text.Position = Udim2::fromScale(0, 0);
-    text.Size = Udim2::fromScale(1,1);
-    text.xAllignment = 1; // 0: Left, 1: Center, 2: Right
-    text.yAllignment = 2; // 0: Top, 1: Center, 2: Bottom
-    text.parent(topBar);
-
-    // be able to resize from 30 pixels inset from top left corner. not sure why youd do that but its possible now :) 
-    Udim2 dragFrom = Udim2::fromScale(0.0f, 0.0f);
-    Udim2 dragTo = Udim2::fromOffset(30.0f, 30.0f);
-*/

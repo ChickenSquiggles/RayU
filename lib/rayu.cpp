@@ -52,25 +52,25 @@ void RayU::render(Color bgColor)
     EndDrawing();
 }
 
-void RayU::resizable(Udim2& from, Udim2& to)
+void RayU::resizable(Udim2 from, Udim2 to)
 {
     if 
     (
         IsMouseButtonDown(MOUSE_BUTTON_LEFT)                                  && 
         CheckCollisionPointRec(GetMousePosition(), Udim2::makeRect(from, to)) && 
-        !p_isHolding
+        !p_isResizing
     )
     {
         p_startingMousePos = GetMousePosition();
         p_startingWindowSize = getDimensions();
         p_startingWindowPosition = GetWindowPosition();
-        p_isHolding = true;
+        p_isResizing = true;
     }
     
     if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
-        p_isHolding = false;
+        p_isResizing = false;
 
-    if (!p_isHolding)
+    if (!p_isResizing)
         return;
 
     Vector2 mousePos = GetMousePosition();
@@ -89,4 +89,30 @@ void RayU::resizable(Udim2& from, Udim2& to)
     
     SetWindowPosition( p_startingWindowPosition.x + ( draggingRight ? std::min( dist.x, p_startingWindowSize.x - 100.0f ) : 0 ), 
                        p_startingWindowPosition.y + ( draggingDown  ? std::min( dist.y, p_startingWindowSize.y - 100.0f ) : 0 ) );
+}
+
+void RayU::draggable(Udim2 from, Udim2 to)
+{
+    Vector2 mousePos = GetMousePosition();
+    Vector2 windowPos = GetWindowPosition();
+    Vector2 mousePosWindow = mousePos + windowPos;
+    
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        if (CheckCollisionPointRec(mousePos, Udim2::makeRect(from, to)))
+        {
+            p_isDragging = true;
+            p_PreviousMousePos = mousePosWindow;
+        }
+    
+    if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
+        p_isDragging = false;
+
+    if (!p_isDragging)
+        return;
+    
+    Vector2 delta = mousePosWindow - p_PreviousMousePos;
+    Vector2 newWindowPosition = windowPos + delta;
+    SetWindowPosition( newWindowPosition.x, newWindowPosition.y );
+
+    p_PreviousMousePos = mousePosWindow;
 }

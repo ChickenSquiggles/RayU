@@ -17,12 +17,15 @@ struct RayU
     bool isOpen();
     void close();
     
-    void resizable(Udim2& from, Udim2& to);
+    void resizable(Udim2 from, Udim2 to);
+    void draggable(Udim2 from, Udim2 to);
     
     private:
     Vector2 p_startingMousePos;
     Vector2 p_startingWindowSize;
     Vector2 p_startingWindowPosition;
-    bool p_isHolding;
+    Vector2 p_PreviousMousePos;
+    bool p_isResizing;
+    bool p_isDragging;
     std::vector<UiElement*> p_Children;
 };
