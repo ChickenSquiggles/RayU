@@ -25,7 +25,7 @@ Frame Frame::clone()
 
 void TextLabel::backendRender() 
 {
-    const RetVec4 posSize = getPosSize();
+    RetVec4 posSize = getPosSize();
     auto measure = [&](float fs) 
     {
         return MeasureTextEx(GetFontDefault(), Text.c_str(), fs, 3.0f);
@@ -64,22 +64,21 @@ void TextLabel::backendRender()
     }
 
     // Allignment
-    Vector2 pos = posSize.Pos;
-    switch (xAllignment)
-    {
-        case 1:
-            pos += (posSize.Size/2) - (textSize/2);
-            break;
-        case 2:
-            pos += posSize.Size - textSize;
-            break;
-    }
-    
+    if (xAllignment == 1)
+        posSize.Pos.x += (posSize.Size.x / 2) - (textSize.x / 2);
+    else if (xAllignment == 2)
+        posSize.Pos.x += (posSize.Size.x) - textSize.x;
+
+    if (yAllignment == 1)
+        posSize.Pos.y += (posSize.Size.y / 2) - (textSize.y / 2);
+    else if (yAllignment == 2)
+        posSize.Pos.y += (posSize.Size.y) - textSize.y;
+
     // Final Drawing
     Color finalColor = TextColor;
     finalColor.a = std::max(255 - Transparency * 25, 0.0f);
 
-    DrawTextEx(GetFontDefault(), Text.c_str(), pos, fs, 3.0f,finalColor);
+    DrawTextEx(GetFontDefault(), Text.c_str(), posSize.Pos, fs, 3.0f, finalColor);
 }
 TextLabel TextLabel::clone()
 {

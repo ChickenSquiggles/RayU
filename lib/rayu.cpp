@@ -95,13 +95,13 @@ void RayU::draggable(Udim2 from, Udim2 to)
 {
     Vector2 mousePos = GetMousePosition();
     Vector2 windowPos = GetWindowPosition();
-    Vector2 mousePosWindow = mousePos + windowPos;
+    Vector2 mouseScreen = mousePos + windowPos;
     
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         if (CheckCollisionPointRec(mousePos, Udim2::makeRect(from, to)))
         {
             p_isDragging = true;
-            p_PreviousMousePos = mousePosWindow;
+            p_PreviousMousePos = mouseScreen;
         }
     
     if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
@@ -110,9 +110,9 @@ void RayU::draggable(Udim2 from, Udim2 to)
     if (!p_isDragging)
         return;
     
-    Vector2 delta = mousePosWindow - p_PreviousMousePos;
+    Vector2 delta = mouseScreen - p_PreviousMousePos;
     Vector2 newWindowPosition = windowPos + delta;
     SetWindowPosition( newWindowPosition.x, newWindowPosition.y );
 
-    p_PreviousMousePos = mousePosWindow;
+    p_PreviousMousePos = mouseScreen;
 }
