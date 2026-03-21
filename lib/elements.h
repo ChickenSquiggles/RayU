@@ -8,7 +8,19 @@ struct Frame : UiElement
     Color BackgroundColor = BLACK;
     float Roundness = 0;
     float Transparency = 0;
+    
+    Frame clone();
+};
 
+struct ImageLabel : UiElement 
+{
+    void backendRender() override;
+    void setImage(std::string path);
+    
+    Texture2D Texture;
+    float Transparency = 0;
+    float Rotation = 0;
+    
     Frame clone();
 };
 

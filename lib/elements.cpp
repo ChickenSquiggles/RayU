@@ -6,7 +6,7 @@ void Frame::backendRender()
     Rectangle rec = posSize.makeRect();
 
     Color finalColor = BackgroundColor;
-    finalColor.a = std::max(255 - Transparency * 25, 0.0f);
+    finalColor.a = std::max(255 - Transparency * 255, 0.0f);
 
     DrawRectangleRounded
     (
@@ -21,6 +21,26 @@ Frame Frame::clone()
     Frame* frame = new Frame(*this);
     frame->Parent = nullptr;
     return *frame;
+}
+
+void ImageLabel::backendRender()
+{
+    RetVec4 posSize = getPosSize();
+
+    Rectangle sourceRec = { 0, 0, (float)Texture.width, (float)Texture.height };
+
+    Rectangle destRec = { posSize.Pos.x, posSize.Pos.y, posSize.Size.x, posSize.Size.y };
+
+    Vector2 origin = { 0, 0 };
+    
+    // draw it
+    Color finalColor = WHITE;
+    finalColor.a = std::max(255 - Transparency * 255, 0.0f);
+    DrawTexturePro(Texture, sourceRec, destRec, origin, Rotation, finalColor);
+}
+void ImageLabel::setImage(std::string path)
+{
+    Texture = LoadTexture(path.c_str());
 }
 
 void TextLabel::backendRender() 
@@ -76,7 +96,7 @@ void TextLabel::backendRender()
 
     // Final Drawing
     Color finalColor = TextColor;
-    finalColor.a = std::max(255 - Transparency * 25, 0.0f);
+    finalColor.a = std::max(255 - Transparency * 255, 0.0f);
 
     DrawTextEx(GetFontDefault(), Text.c_str(), posSize.Pos, fs, 3.0f, finalColor);
 }

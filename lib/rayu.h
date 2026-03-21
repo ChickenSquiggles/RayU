@@ -12,6 +12,7 @@ struct RayU
     void open(int w, int h, const char* title, int fps, ConfigFlags flags);
     
     void pair(UiElement& element);
+    void unpair(UiElement& element);
     void render(Color bgColor = RAYWHITE);
     
     bool isOpen();

@@ -1,9 +1,16 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <cctype>
+#include <utility>
+#include <functional>
+#include <optional>
+#include <algorithm>
+#include <cmath>
 #include "raylib.h"
 
 Vector2 getDimensions();
+Color lerpColor(Color a, Color b, float t);
 struct Udim 
 {
     static Udim fromScale(float scale);

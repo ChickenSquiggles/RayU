@@ -29,18 +29,20 @@ RetVec4 UiElement::getPosSize()
 }
 
 // Remove old parent, if new parent is not nullptr, add self to parent's children
-void UiElement::parent(UiElement& p) 
+void UiElement::parent(std::optional<std::reference_wrapper<UiElement>> p)
 {
-    if (&p == Parent)
-        return;
-    
     if (Parent)
         std::erase(Parent->Children, this);
 
-    Parent = &p;
-
-    if (Parent)
+    if (p.has_value())
+    {
+        Parent = &p->get();
         Parent->Children.push_back(this);
+    }
+    else
+    {
+        Parent = nullptr;
+    }
 }
 
 // RayU user should never need backendRender. render and backendRender are seperated so calling children's render doesn't need to be in every element's render function.
@@ -49,6 +51,39 @@ void UiElement::render()
 {
     backendRender();
     
+    if (forceCalculation || onClick || onHoverStart || onHoverEnd)
+    {
+        Vector2 mousePos = GetMousePosition();
+
+        RetVec4 ultimatePosition = getPosSize();
+
+        if (
+                mousePos.x <= ultimatePosition.Pos.x + ultimatePosition.Size.x && mousePos.x >= ultimatePosition.Pos.x
+            &&  mousePos.y <= ultimatePosition.Pos.y + ultimatePosition.Size.y && mousePos.y >= ultimatePosition.Pos.y
+        )
+        {
+            if (onClick && IsMouseButtonPressed(0))
+            {
+                onClick();
+            }
+            if (!hovering)
+            {
+                hovering = true;
+                if (onHoverStart)
+                    onHoverStart();
+            }
+        }
+        else
+        {
+            if (hovering)
+            {
+                hovering = false;
+                if (onHoverEnd)
+                    onHoverEnd();
+            }
+        }
+    }
+
     for (UiElement *child : Children)
         child->render();
 }

@@ -42,6 +42,10 @@ void RayU::pair(UiElement& element)
 {
     p_Children.push_back(&element);
 }
+void RayU::unpair(UiElement& element) 
+{
+    std::erase(p_Children, &element);
+}
 
 void RayU::render(Color bgColor) 
 {
@@ -84,11 +88,10 @@ void RayU::resizable(Udim2 from, Udim2 to)
     bool draggingRight = p_startingMousePos.x < p_startingWindowSize.x / 2;
     bool draggingDown = p_startingMousePos.y < p_startingWindowSize.y / 2;
 
-    SetWindowSize( std::max( p_startingWindowSize.x + ( draggingRight ? -dist.x : dist.x ), 100.0f ), 
-                   std::max( p_startingWindowSize.y + ( draggingDown  ? -dist.y : dist.y ), 100.0f ) );
-    
-    SetWindowPosition( p_startingWindowPosition.x + ( draggingRight ? std::min( dist.x, p_startingWindowSize.x - 100.0f ) : 0 ), 
-                       p_startingWindowPosition.y + ( draggingDown  ? std::min( dist.y, p_startingWindowSize.y - 100.0f ) : 0 ) );
+    SetWindowSize( std::max( p_startingWindowSize.x + ( draggingRight ? -dist.x : dist.x ), 350.0f ), 
+                   std::max( p_startingWindowSize.y + ( draggingDown  ? -dist.y : dist.y ), 350.0f ) );
+    SetWindowPosition( p_startingWindowPosition.x + ( draggingRight ? std::min( dist.x, p_startingWindowSize.x - 350.0f ) : 0 ), 
+                       p_startingWindowPosition.y + ( draggingDown  ? std::min( dist.y, p_startingWindowSize.y - 350.0f ) : 0 ) );
 }
 
 void RayU::draggable(Udim2 from, Udim2 to)

@@ -6,6 +6,17 @@ Vector2 getDimensions()
              static_cast<float>(GetScreenHeight()) };
 }
 
+Color lerpColor(Color a, Color b, float t)
+{
+    return {
+        Color {
+            static_cast<unsigned char>(std::lerp(a.r, b.r, t)),
+            static_cast<unsigned char>(std::lerp(a.g, b.g, t)),
+            static_cast<unsigned char>(std::lerp(a.b, b.b, t)),
+        }
+    };
+}
+
 // UDIM
 Udim Udim::fromScale(float scale) 
 {
