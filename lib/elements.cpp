@@ -46,42 +46,16 @@ void ImageLabel::setImage(std::string path)
 void TextLabel::backendRender() 
 {
     RetVec4 posSize = getPosSize();
-    auto measure = [&](float fs) 
-    {
-        return MeasureTextEx(GetFontDefault(), Text.c_str(), fs, 3.0f);
-    };
+    
+    Vector2 baseSize = MeasureTextEx(GetFontDefault(), Text.c_str(), FontSize, 3.0f);
 
-    float fs = FontSize;
-    Vector2 textSize = measure(fs);
+    float scaleX = AutoScaleX ? posSize.Size.x / baseSize.x : 1000;
+    float scaleY = AutoScaleY ? posSize.Size.y / baseSize.y: 1000;
+    
+    float scale = std::min(scaleX, scaleY);
+    float fs = (AutoScaleX || AutoScaleY) ? FontSize * scale: FontSize;
 
-    // not a huge fan of this code but i cant find a better solution
-    if (AutoScaleX) 
-    {
-        while (textSize.x < posSize.Size.x)
-        {
-            fs++;
-            textSize = measure(fs);
-        }
-        while (textSize.x > posSize.Size.x)
-        {
-            fs--;
-            textSize = measure(fs);
-        }
-    }
-    if (AutoScaleY) 
-    {
-        if (!AutoScaleX)
-            while (textSize.y < posSize.Size.y) 
-            {
-                fs++;
-                textSize = measure(fs);   
-            }
-        while (textSize.y > posSize.Size.y) 
-        {
-            fs--;
-            textSize = measure(fs);   
-        }
-    }
+    Vector2 textSize = MeasureTextEx(GetFontDefault(), Text.c_str(), fs, 3.0f);
 
     // Allignment
     if (xAllignment == 1)
