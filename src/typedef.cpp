@@ -1,4 +1,4 @@
-#include "typedef.h"
+#include <RayU/typedef.h>
 
 Vector2 getDimensions()
 {

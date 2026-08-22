@@ -1,4 +1,4 @@
-#include "rayu.h"
+#include <RayU/rayu.h>
 
 void makeWindow(int w, int h, const char* title, int fps) {
     InitWindow(w, h, title);

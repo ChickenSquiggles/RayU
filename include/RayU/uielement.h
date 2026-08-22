@@ -1,5 +1,5 @@
 #pragma once
-#include "typedef.h"
+#include <RayU/typedef.h>
 
 struct UiElement {
     std::vector<UiElement*>* getChildren();

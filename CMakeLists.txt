@@ -1,10 +1,12 @@
 cmake_minimum_required(VERSION 3.29)
-project(app LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+project(RayU
+    VERSION 1.0.0
+    LANGUAGES CXX
+)
 
 include(FetchContent)
+
 FetchContent_Declare(
     raylib
     GIT_REPOSITORY https://github.com/raysan5/raylib.git
@@ -13,7 +15,25 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(raylib)
 
-add_executable(app example.cpp)
+add_library(RayU
+    src/elements.cpp
+    src/rayu.cpp
+    src/typedef.cpp
+    src/uielement.cpp
+)
 
-target_link_libraries(app raylib TypeDef Elements UiElement RayU)
-add_subdirectory(lib)
+target_include_directories(RayU
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+target_compile_features(RayU PUBLIC cxx_std_20)
+
+target_link_libraries(RayU
+    PUBLIC
+        raylib
+)
+
+add_library(RayU::RayU ALIAS RayU)
+
+add_subdirectory(example)

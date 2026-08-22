@@ -1,4 +1,4 @@
-#include "rayu.h"
+#include <RayU/rayu.h>
 
 RayU ui;
 

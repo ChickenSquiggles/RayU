@@ -1,4 +1,4 @@
-#include "elements.h"
+#include <RayU/elements.h>
 
 void Frame::backendRender() 
 {
@@ -46,14 +46,15 @@ void ImageLabel::setImage(std::string path)
 void TextLabel::backendRender() 
 {
     RetVec4 posSize = getPosSize();
-    
+
+    // Font Size Calculation
     Vector2 baseSize = MeasureTextEx(GetFontDefault(), Text.c_str(), FontSize, 3.0f);
 
     float scaleX = AutoScaleX ? posSize.Size.x / baseSize.x : 1000;
-    float scaleY = AutoScaleY ? posSize.Size.y / baseSize.y: 1000;
+    float scaleY = AutoScaleY ? posSize.Size.y / baseSize.y : 1000;
     
     float scale = std::min(scaleX, scaleY);
-    float fs = (AutoScaleX || AutoScaleY) ? FontSize * scale: FontSize;
+    float fs = (AutoScaleX || AutoScaleY) ? FontSize * scale : FontSize;
 
     Vector2 textSize = MeasureTextEx(GetFontDefault(), Text.c_str(), fs, 3.0f);
 
