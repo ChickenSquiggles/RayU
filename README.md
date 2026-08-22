@@ -17,4 +17,7 @@ This allows interfaces to remain **uniform across any monitor or window size**, 
 
 This is mostly for my own learning so don't expect it to be the greatest project ever.
 
-**If you do somehow stumble upon this, build however you use CMAKE, but my personal build workflow is 'cmake -S . -B build -G "MinGW Makefiles"' to start a build directory (one time thing), then 'cmake --build build' from then on.**
+<br><br>
+Here is a program that was made using RayU. (Framerate Lowered Due To Being A Gif)
+
+![Example Program Made With RayU](https://i.ibb.co/vx7cND5P/example.gif)
