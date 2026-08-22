@@ -36,4 +36,7 @@ target_link_libraries(RayU
 
 add_library(RayU::RayU ALIAS RayU)
 
-#add_subdirectory(example)
+# Uncomment the line below to compile the example housed in the "example" folder
+# add_subdirectory(example)
+
+# For an example standalone program using RayU via FetchContent, check the "standalone" folder
