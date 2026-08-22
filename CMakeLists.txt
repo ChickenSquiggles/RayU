@@ -36,4 +36,4 @@ target_link_libraries(RayU
 
 add_library(RayU::RayU ALIAS RayU)
 
-add_subdirectory(example)
+#add_subdirectory(example)
