@@ -5,8 +5,6 @@ RayU ui;
 
 int main() 
 {
-    ui.preserveRatio(true);
-
     // Lets start off with a top bar to drag from
     Frame topBar;
     // Position will always start at 0,0 unless changed so we dont have to touch it
@@ -41,20 +39,56 @@ int main()
 
     // Parent it to the topbar so RayU knows how and where to render it.
     topBarText.parent(topBar);
-
-    
     
     // Be able to drag from the bottom right corner
     Udim2 dragToResize = Udim2::fromScale(1, 1);
     // took the ending point and went back 30 pixels on x and y. you could change the scales arounds too but i think pixels make sense for dragging.
     Udim2 dragFromResize = dragToResize - Udim2::fromOffset(30, 30);
 
-    
+    TextLabel bottomText;
+    bottomText.Text = "Try resizing the window with the button off and on!";
+    bottomText.TextColor = BLACK;
+    bottomText.Size = Udim2{1, 0, 0, 20};
+    bottomText.Position = Udim2{0, 0, 1, -20};
+    bottomText.AutoScaleX = true;
+    bottomText.AutoScaleY = true;
+    bottomText.xAllignment = 1;
+    bottomText.yAllignment = 0;
+    ui.pair(bottomText);
+
+    bool ENABLED = false;
+    Frame onOffButtonHolder;
+    onOffButtonHolder.AnchorPoint = Vector2{.5, .5};
+    onOffButtonHolder.Position = Udim2{.5, 0, .5, 0};
+    onOffButtonHolder.Size = Udim2{.25, 0, .14, -10};
+    onOffButtonHolder.BackgroundColor = Color{18,18,18};
+    onOffButtonHolder.Roundness = 100;
+    onOffButtonHolder.onClick = [&ENABLED]() -> void
+    {
+        ENABLED = !ENABLED;
+        ui.preserveRatio(ENABLED);
+    };
+
+    Frame onOffButton;
+    onOffButton.AnchorPoint = Vector2{0, .5};
+    onOffButton.Size = Udim2{.45, 0, .8, 0};
+    onOffButton.Position = Udim2{0, 5, .5, 0};
+    onOffButton.BackgroundColor = RED;
+    onOffButton.Roundness = 100;
+    onOffButton.parent(onOffButtonHolder);
+
+    ui.pair(onOffButtonHolder);
+
     // Finally we can open our window. You can do this at any point, as long as its before rendering.
     // X, Y, Title, FPS, Flags. Has overloads, check rayu.cpp.
     ui.open(800, 500, "Hello!", 60, FLAG_WINDOW_UNDECORATED);
     while (ui.isOpen()) 
     {
+        onOffButton.AnchorPoint.x = static_cast<float>(std::lerp(onOffButton.AnchorPoint.x, ENABLED ? 1 : 0, .2));
+        onOffButton.Position.X.Scale = std::lerp(onOffButton.Position.X.Scale, ENABLED ? 1 : 0, .2);
+        onOffButton.Position.X.Offset = std::lerp(onOffButton.Position.X.Offset, ENABLED ? -5 : 5, .2);
+        onOffButton.BackgroundColor = lerpColor(onOffButton.BackgroundColor, ENABLED ? GREEN : RED, .2);
+
         ui.resizable(dragFromResize, dragToResize);
         ui.draggable(dragFrom, dragTo);
         ui.render(RAYWHITE);
