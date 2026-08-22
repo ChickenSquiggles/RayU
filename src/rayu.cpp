@@ -56,6 +56,52 @@ void RayU::render(Color bgColor)
     EndDrawing();
 }
 
+void RayU::preserveRatio(bool state)
+{
+    p_preserveRatio = state;
+}
+
+//void RayU::resizable(Udim2 from, Udim2 to)
+//{
+//    if 
+//    (
+//        IsMouseButtonDown(MOUSE_BUTTON_LEFT)                                  && 
+//        CheckCollisionPointRec(GetMousePosition(), Udim2::makeRect(from, to)) && 
+//        !p_isResizing
+//    )
+//    {
+//        p_startingMousePos = GetMousePosition();
+//        p_startingWindowSize = getDimensions();
+//        p_startingWindowPosition = GetWindowPosition();
+//
+//        p_startingAspectRatio = p_startingWindowSize.x / p_startingWindowSize.y;
+//
+//        p_isResizing = true;
+//    }
+//    
+//    if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
+//        p_isResizing = false;
+//
+//    if (!p_isResizing)
+//        return;
+//
+//    Vector2 mousePos = GetMousePosition();
+//    Vector2 currentWindowPos = GetWindowPosition();
+//
+//    Vector2 mouseScreen = mousePos + currentWindowPos;
+//    Vector2 startingMouseScreen = p_startingMousePos + p_startingWindowPosition;
+//
+//    Vector2 dist = mouseScreen - startingMouseScreen;
+//        
+//    bool draggingRight = p_startingMousePos.x < p_startingWindowSize.x / 2;
+//    bool draggingDown = p_startingMousePos.y < p_startingWindowSize.y / 2;
+//
+//    SetWindowSize( std::max( p_startingWindowSize.x + ( draggingRight ? -dist.x : dist.x ), 350.0f ), 
+//                   std::max( p_startingWindowSize.y + ( draggingDown  ? -dist.y : dist.y ), 350.0f ) );
+//    SetWindowPosition( p_startingWindowPosition.x + ( draggingRight ? std::min( dist.x, p_startingWindowSize.x - 350.0f ) : 0 ), 
+//                       p_startingWindowPosition.y + ( draggingDown  ? std::min( dist.y, p_startingWindowSize.y - 350.0f ) : 0 ) );
+//}
+
 void RayU::resizable(Udim2 from, Udim2 to)
 {
     if 
@@ -68,6 +114,9 @@ void RayU::resizable(Udim2 from, Udim2 to)
         p_startingMousePos = GetMousePosition();
         p_startingWindowSize = getDimensions();
         p_startingWindowPosition = GetWindowPosition();
+
+        p_startingAspectRatio = p_startingWindowSize.x / p_startingWindowSize.y;
+
         p_isResizing = true;
     }
     
@@ -86,12 +135,54 @@ void RayU::resizable(Udim2 from, Udim2 to)
     Vector2 dist = mouseScreen - startingMouseScreen;
         
     bool draggingRight = p_startingMousePos.x < p_startingWindowSize.x / 2;
-    bool draggingDown = p_startingMousePos.y < p_startingWindowSize.y / 2;
+    bool draggingDown  = p_startingMousePos.y < p_startingWindowSize.y / 2;
 
-    SetWindowSize( std::max( p_startingWindowSize.x + ( draggingRight ? -dist.x : dist.x ), 350.0f ), 
-                   std::max( p_startingWindowSize.y + ( draggingDown  ? -dist.y : dist.y ), 350.0f ) );
-    SetWindowPosition( p_startingWindowPosition.x + ( draggingRight ? std::min( dist.x, p_startingWindowSize.x - 350.0f ) : 0 ), 
-                       p_startingWindowPosition.y + ( draggingDown  ? std::min( dist.y, p_startingWindowSize.y - 350.0f ) : 0 ) );
+    float width  = p_startingWindowSize.x + (draggingRight ? -dist.x : dist.x);
+    float height = p_startingWindowSize.y + (draggingDown  ? -dist.y : dist.y);
+
+    if (p_preserveRatio)
+    {
+        float widthChange  = std::abs(width - p_startingWindowSize.x);
+        float heightChange = std::abs(height - p_startingWindowSize.y);
+
+        if (widthChange > heightChange)
+            height = width / p_startingAspectRatio;
+        else
+            width = height * p_startingAspectRatio;
+    }
+
+    if (p_preserveRatio)
+    {
+        constexpr float minSize = 350.0f;
+
+        if (width < minSize)
+        {
+            width = minSize;
+            height = width / p_startingAspectRatio;
+        }
+
+        if (height < minSize)
+        {
+            height = minSize;
+            width = height * p_startingAspectRatio;
+        }
+    }
+    else
+    {
+        width  = std::max(width, 350.0f);
+        height = std::max(height, 350.0f);
+    }
+
+    Vector2 windowPosition = p_startingWindowPosition;
+
+    if (draggingRight)
+        windowPosition.x += p_startingWindowSize.x - width;
+
+    if (draggingDown)
+        windowPosition.y += p_startingWindowSize.y - height;
+
+    SetWindowSize(width, height);
+    SetWindowPosition(windowPosition.x, windowPosition.y);
 }
 
 void RayU::draggable(Udim2 from, Udim2 to)

@@ -1,11 +1,12 @@
 #include <RayU/rayu.h>
 
 RayU ui;
-
 // Udim2 consists of X, Y, two Udim2's. 
 
 int main() 
 {
+    ui.preserveRatio(true);
+
     // Lets start off with a top bar to drag from
     Frame topBar;
     // Position will always start at 0,0 unless changed so we dont have to touch it
